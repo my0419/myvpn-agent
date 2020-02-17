@@ -5,7 +5,7 @@ Utility to install and configure VPN protocols on the server
 ### Features
 
 * Setup VPN protocols
-* HTTP server gives the setup status and vpn configuration with AES encryption
+* HTTP server gives the setup status and vpn configuration with AES encryption (ports: `8400` or `80`)
 
 ### Layer Interaction
 

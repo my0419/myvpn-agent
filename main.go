@@ -10,6 +10,7 @@ import (
 
 func main() {
 
+	finish := make(chan bool)
 	if len(os.Getenv("ENCRYPT_KEY")) != 32 {
 		log.Fatal("Invalid ENCRYPT_KEY")
 	}
@@ -26,5 +27,13 @@ func main() {
 		setup.Start()
 	}()
 	http.HandleFunc("/", handler.HandleState(setup, os.Getenv("ENCRYPT_KEY")))
-	log.Fatal(http.ListenAndServe(":8400", nil))
+	go func() {
+		log.Println(http.ListenAndServe(":8400", nil))
+	}()
+
+	go func() {
+		log.Println(http.ListenAndServe(":80", nil))
+	}()
+
+	<-finish
 }
