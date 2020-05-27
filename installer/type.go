@@ -23,7 +23,7 @@ func listOfTypes() map[string]string {
 		TypeWireGuard:   "https://gist.githubusercontent.com/my0419/dd0111d60375dc756c19a70e0907e32b/raw/2f6495d24484611a69df5fe416d1b9c862bc2a22/wireguard.sh",
 		TypeTestSuccess: "https://gist.githubusercontent.com/my0419/4b5eeaaa98f4b5ae7eeee7b2f5b5cb9a/raw/e730a11c7d5d2caf9ea63ee672f9a195250d06be/test-success.sh",
 		TypeTestFail:    "https://gist.githubusercontent.com/my0419/b4868d16abdd5e43ee7b58c71b079529/raw/a71ee1dbba6d066282db85587ecbf757f4703281/test-fail.sh",
-		TypeShadowsocks: "https://gist.githubusercontent.com/my0419/44f0e8aa1b70fa887432ad6d1d376830/raw/8654aea974d71d14dd9f1a310ba84f3e81d00f07/shadowsocks.sh",
+		TypeShadowsocks: "https://gist.githubusercontent.com/my0419/44f0e8aa1b70fa887432ad6d1d376830/raw/1f5a68ea3c28d15276719935c22bfcf150bdfff9/shadowsocks.sh",
 	}
 }
 
