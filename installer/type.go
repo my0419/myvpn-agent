@@ -18,7 +18,7 @@ type Type string
 
 func listOfTypes() map[string]string {
 	return map[string]string{
-		TypeL2TP:        "https://gist.githubusercontent.com/my0419/560071251f2427a9a19862d8a04edb94/raw/cbccae8b44578ca330192843f1b828f16b5e013d/l2tp.sh",
+		TypeL2TP:        "https://gist.githubusercontent.com/my0419/560071251f2427a9a19862d8a04edb94/raw/f6a1f2426f8ed7af889f4ed39faf0e1505ee2a6f/l2tp.sh",
 		TypePPTP:        "https://gist.githubusercontent.com/my0419/db77a7bdb466b9df01ffa3f96f4b3f37/raw/2889061402fbe1dd247316caed0ca45722ca9b07/pptp.sh",
 		TypeOpenVPN:     "https://gist.githubusercontent.com/my0419/73ba68f383b5772030078ec871456b06/raw/c20873b922cb06224d3a9b2be9a38676dec4365a/openvpn.sh",
 		TypeWireGuard:   "https://gist.githubusercontent.com/my0419/dd0111d60375dc756c19a70e0907e32b/raw/168aa42b994625d4160602d52787d068ee84b9bd/wireguard.sh",
