@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"myvpn-agent/installer"
-	"myvpn-agent/crypto"
+	"github.com/my0419/myvpn-agent/installer"
+	"github.com/my0419/myvpn-agent/crypto"
 	"encoding/base64"
 	"encoding/json"
 	"net/http"

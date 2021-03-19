@@ -1,8 +1,8 @@
 package main
 
 import (
-	"myvpn-agent/installer"
-	"myvpn-agent/handler"
+	"github.com/my0419/myvpn-agent/installer"
+	"github.com/my0419/myvpn-agent/handler"
 	"net/http"
 	"os"
 	"log"
