@@ -1,11 +1,14 @@
 package main
 
 import (
-	"github.com/my0419/myvpn-agent/installer"
+	"crypto/tls"
 	"github.com/my0419/myvpn-agent/handler"
+	"github.com/my0419/myvpn-agent/installer"
+	"github.com/my0419/myvpn-agent/system"
+	"golang.org/x/crypto/acme/autocert"
+	"log"
 	"net/http"
 	"os"
-	"log"
 )
 
 func main() {
@@ -26,13 +29,39 @@ func main() {
 	go func() {
 		setup.Start()
 	}()
-	http.HandleFunc("/", handler.HandleState(setup, os.Getenv("ENCRYPT_KEY")))
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handler.HandleState(setup, os.Getenv("ENCRYPT_KEY")))
+
 	go func() {
-		log.Println(http.ListenAndServe(":8400", nil))
+		log.Println(http.ListenAndServe(":8400", mux))
 	}()
 
 	go func() {
-		log.Println(http.ListenAndServe(":80", nil))
+		ip, err := system.PublicIpAddr()
+		if err != nil {
+			log.Println("Failed to get public ip addr")
+			return
+		}
+		domain := system.DomainName(ip)
+		log.Println("Host:", domain)
+
+		certManager := autocert.Manager{
+			Cache: 		autocert.DirCache("/tmp"),
+			Prompt:     autocert.AcceptTOS,
+			HostPolicy: autocert.HostWhitelist(domain),
+		}
+		server := &http.Server{
+			Addr: ":443",
+			Handler: mux,
+			TLSConfig: &tls.Config{
+				GetCertificate: certManager.GetCertificate,
+			},
+		}
+		go http.ListenAndServe(":80", certManager.HTTPHandler(nil))
+		if err := server.ListenAndServeTLS("", ""); err != nil {
+			log.Println("Failed to serve TLS", err)
+		}
 	}()
 
 	<-finish
