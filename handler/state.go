@@ -1,15 +1,16 @@
 package handler
 
 import (
-	"github.com/my0419/myvpn-agent/installer"
-	"github.com/my0419/myvpn-agent/crypto"
 	"encoding/base64"
 	"encoding/json"
-	"net/http"
 	"fmt"
-	"time"
+	"github.com/my0419/myvpn-agent/crypto"
+	"github.com/my0419/myvpn-agent/installer"
+	"github.com/my0419/myvpn-agent/system"
 	"log"
+	"net/http"
 	"os"
+	"time"
 )
 
 func HandleState(installer *installer.Installer, encryptKey string) func(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +26,7 @@ func HandleState(installer *installer.Installer, encryptKey string) func(w http.
 		go func() {
 			select {
 			case <-ctx.Done():
-				if state.Status.IsCompleted() {
+				if false == system.DebugEnabled() && state.Status.IsCompleted() {
 					os.Exit(0) // turn off agent response are delivered
 				}
 				return
