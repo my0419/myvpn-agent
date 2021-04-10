@@ -34,13 +34,12 @@ func main() {
 		log.Fatal(err)
 	}
 	go func() {
-		setup.Start()
+		 setup.Start()
 	}()
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", handler.HandleState(setup, os.Getenv("ENCRYPT_KEY")))
+	http.HandleFunc("/", handler.HandleState(setup, os.Getenv("ENCRYPT_KEY")))
 
-	mux.HandleFunc("/debug", func(writer http.ResponseWriter, request *http.Request) {
+	http.HandleFunc("/debug", func(writer http.ResponseWriter, request *http.Request) {
 		if false == system.DebugEnabled() {
 			writer.WriteHeader(404)
 			return
@@ -54,7 +53,7 @@ func main() {
 	})
 
 	go func() {
-		log.Println(http.ListenAndServe(":8400", mux))
+		log.Println(http.ListenAndServe(":8400", nil))
 	}()
 
 	go func() {
@@ -67,19 +66,18 @@ func main() {
 		log.Println("Host:", domain)
 
 		certManager := autocert.Manager{
-			Cache: 		autocert.DirCache("/tmp"),
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist(domain),
 		}
 		server := &http.Server{
-			Addr: ":443",
-			Handler: mux,
+			Addr: ":https",
 			TLSConfig: &tls.Config{
 				GetCertificate: certManager.GetCertificate,
 			},
 		}
-		go http.ListenAndServe(":80", certManager.HTTPHandler(nil))
-		if err := server.ListenAndServeTLS("", ""); err != nil {
+
+		go http.ListenAndServe(":80", certManager.HTTPHandler(nil)) // redirects
+		if err = server.ListenAndServeTLS("", ""); err != nil {
 			log.Println("Failed to serve TLS", err)
 		}
 	}()

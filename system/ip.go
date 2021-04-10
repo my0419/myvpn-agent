@@ -7,7 +7,7 @@ import (
 )
 
 func DomainName(ip string) string  {
-	return fmt.Sprintf("%s.xip.io", ip)
+	return fmt.Sprintf("%s.nip.io", ip)
 }
 
 func PublicIpAddr() (string, error)  {
