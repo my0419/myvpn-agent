@@ -27,6 +27,7 @@ func HandleState(installer *installer.Installer, encryptKey string) func(w http.
 			select {
 			case <-ctx.Done():
 				if false == system.DebugEnabled() && state.Status.IsCompleted() {
+					time.Sleep(time.Minute)
 					os.Exit(0) // turn off agent response are delivered
 				}
 				return
