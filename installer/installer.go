@@ -1,12 +1,14 @@
 package installer
 
 import (
-	"os/exec"
-	"os"
-	"time"
+	"bytes"
 	"fmt"
-	"log"
+	"github.com/my0419/myvpn-agent/system"
 	"io/ioutil"
+	"log"
+	"os"
+	"os/exec"
+	"time"
 )
 
 type Installer struct {
@@ -15,17 +17,30 @@ type Installer struct {
 }
 
 func (i *Installer) Start() {
+	debug := system.DebugEnabled()
 	cmd := exec.Command("/bin/bash", "-c", fmt.Sprintf("wget -O - %s | bash", i.Type.script()))
 	cmd.Env = os.Environ()
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+
+	buf := new(bytes.Buffer)
+
+	if true == debug {
+		cmd.Stdout = buf
+		cmd.Stderr = buf
+	} else {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+	}
 
 	log.Println("Start script execution")
 	i.State.Status.setSetup()
 	err := cmd.Run()
 	if err != nil {
 		log.Println(fmt.Sprintf("Finish script execution. Error %s", err.Error()))
-		i.State.Status.setError(err.Error())
+		if true == debug {
+			i.State.Status.setError(fmt.Sprintf("Debug mode trace. Error %s\nScript output:\n%s", err.Error(), buf.String()))
+		} else {
+			i.State.Status.setError(err.Error())
+		}
 		return
 	}
 	clientConfigFile, err := os.Open(os.Getenv("VPN_CLIENT_CONFIG_FILE"))
