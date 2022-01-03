@@ -53,8 +53,11 @@ func (i *Installer) Start() {
 	i.State.Status.setCompleted(string(clientConfig))
 }
 
-func CreateInstaller(typeAlias string) (*Installer, error) {
-	typeItem, err := createType(typeAlias)
+func CreateInstaller(t string, os string) (*Installer, error) {
+	if os == "" {
+		os = "debian9"
+	}
+	typeItem, err := createType(t, os)
 	if err != nil {
 		return nil, err
 	}

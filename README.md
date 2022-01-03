@@ -19,3 +19,4 @@ Utility to install and configure VPN protocols on the server
 * `DEBUG_AGENT` debug mode `(default: disabled)`
 * `DNS_PRIMARY` default: OpenDNS `208.67.222.222`
 * `DNS_SECONDARY` default: OpenDNS `208.67.220.220`
+* `VPN_OS` debian11, debian9. default: `debian9`

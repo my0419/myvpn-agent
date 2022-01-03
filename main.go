@@ -29,12 +29,12 @@ func main() {
 		os.Setenv("VPN_CLIENT_CONFIG_FILE", "/tmp/myvpn-client-config")
 	}
 
-	setup, err := installer.CreateInstaller(os.Getenv("VPN_TYPE"))
+	setup, err := installer.CreateInstaller(os.Getenv("VPN_TYPE"), os.Getenv("VPN_OS"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	go func() {
-		 setup.Start()
+		setup.Start()
 	}()
 
 	http.HandleFunc("/", handler.HandleState(setup, os.Getenv("ENCRYPT_KEY")))
