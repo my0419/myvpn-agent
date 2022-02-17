@@ -9,6 +9,7 @@ const (
 	TypeWireGuard   = "wireguard"
 	TypeShadowsocks = "shadowsocks"
 	TypeSocksFive   = "socks5"
+	TypeOwncloud    = "owncloud"
 
 	TypeTestSuccess = "testSuccess"
 	TypeTestFail    = "testFail"
@@ -30,6 +31,7 @@ func listOfTypes() map[string]map[string]string {
 			TypeTestFail:    "https://gist.githubusercontent.com/my0419/b4868d16abdd5e43ee7b58c71b079529/raw/a71ee1dbba6d066282db85587ecbf757f4703281/test-fail.sh",
 			TypeShadowsocks: "https://gist.githubusercontent.com/my0419/44f0e8aa1b70fa887432ad6d1d376830/raw/efb5bf933038ef9bb5291f7a506ee0ac2267fc0f/shadowsocks.sh",
 			TypeSocksFive:   "https://gist.githubusercontent.com/my0419/5ddf74cb80eed50d19ae799d37fcaecc/raw/60439e05f9251b9e1e7c18c2331360b4793c10a2/socks5.sh",
+			TypeOwncloud:    "https://gist.githubusercontent.com/my0419/e56665dc7a359ad276adcec76521384b/raw/3d0a46fd8da084bf02695dc96d302b3c6ce2a77a/owncloud.sh",
 		},
 		"debian11": {
 			TypeL2TP:        "https://gist.githubusercontent.com/my0419/560071251f2427a9a19862d8a04edb94/raw/98a504350d5d30958317f2faecdf46df46cc6032/l2tp.sh",
@@ -40,6 +42,7 @@ func listOfTypes() map[string]map[string]string {
 			TypeTestFail:    "https://gist.githubusercontent.com/my0419/b4868d16abdd5e43ee7b58c71b079529/raw/a71ee1dbba6d066282db85587ecbf757f4703281/test-fail.sh",
 			TypeShadowsocks: "https://gist.githubusercontent.com/my0419/44f0e8aa1b70fa887432ad6d1d376830/raw/e1cf1012768a8e49e149c16034cfa49c3804ae80/shadowsocks.sh",
 			TypeSocksFive:   "https://gist.githubusercontent.com/my0419/5ddf74cb80eed50d19ae799d37fcaecc/raw/60439e05f9251b9e1e7c18c2331360b4793c10a2/socks5.sh",
+			TypeOwncloud:    "https://gist.githubusercontent.com/my0419/e56665dc7a359ad276adcec76521384b/raw/3d0a46fd8da084bf02695dc96d302b3c6ce2a77a/owncloud.sh",
 		},
 	}
 }
