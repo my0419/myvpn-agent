@@ -75,8 +75,6 @@ func main() {
 				GetCertificate: certManager.GetCertificate,
 			},
 		}
-
-		go http.ListenAndServe(":80", certManager.HTTPHandler(nil)) // redirects
 		if err = server.ListenAndServeTLS("", ""); err != nil {
 			log.Println("Failed to serve TLS", err)
 		}
