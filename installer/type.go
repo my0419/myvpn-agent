@@ -10,6 +10,7 @@ const (
 	TypeShadowsocks = "shadowsocks"
 	TypeSocksFive   = "socks5"
 	TypeOwncloud    = "owncloud"
+	TypeNextcloud   = "nextcloud"
 
 	TypeTestSuccess = "testSuccess"
 	TypeTestFail    = "testFail"
@@ -32,6 +33,7 @@ func listOfTypes() map[string]map[string]string {
 			TypeShadowsocks: "https://gist.githubusercontent.com/my0419/44f0e8aa1b70fa887432ad6d1d376830/raw/efb5bf933038ef9bb5291f7a506ee0ac2267fc0f/shadowsocks.sh",
 			TypeSocksFive:   "https://gist.githubusercontent.com/my0419/5ddf74cb80eed50d19ae799d37fcaecc/raw/60439e05f9251b9e1e7c18c2331360b4793c10a2/socks5.sh",
 			TypeOwncloud:    "https://gist.githubusercontent.com/my0419/e56665dc7a359ad276adcec76521384b/raw/4aaea8d0b0449e5e04afe293ec37b1d33742a460/owncloud.sh",
+			TypeNextcloud:   "https://gist.githubusercontent.com/my0419/f8a4d1b4b6d6b91095f5f74400862609/raw/57c756b2b10ea5ebc2b9b4306f0985671e45d3a9/nextcloud.sh",
 		},
 		"debian11": {
 			TypeL2TP:        "https://gist.githubusercontent.com/my0419/560071251f2427a9a19862d8a04edb94/raw/98a504350d5d30958317f2faecdf46df46cc6032/l2tp.sh",
@@ -43,6 +45,7 @@ func listOfTypes() map[string]map[string]string {
 			TypeShadowsocks: "https://gist.githubusercontent.com/my0419/44f0e8aa1b70fa887432ad6d1d376830/raw/e1cf1012768a8e49e149c16034cfa49c3804ae80/shadowsocks.sh",
 			TypeSocksFive:   "https://gist.githubusercontent.com/my0419/5ddf74cb80eed50d19ae799d37fcaecc/raw/60439e05f9251b9e1e7c18c2331360b4793c10a2/socks5.sh",
 			TypeOwncloud:    "https://gist.githubusercontent.com/my0419/e56665dc7a359ad276adcec76521384b/raw/4aaea8d0b0449e5e04afe293ec37b1d33742a460/owncloud.sh",
+			TypeNextcloud:   "https://gist.githubusercontent.com/my0419/f8a4d1b4b6d6b91095f5f74400862609/raw/57c756b2b10ea5ebc2b9b4306f0985671e45d3a9/nextcloud.sh",
 		},
 	}
 }
