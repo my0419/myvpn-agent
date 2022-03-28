@@ -13,8 +13,11 @@ import (
 	"time"
 )
 
-func HandleState(installer *installer.Installer, encryptKey string) func(w http.ResponseWriter, r *http.Request) {
+func HandleState(installer *installer.Installer, stopAutocertHttp chan bool, encryptKey string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.TLS != nil {
+			stopAutocertHttp <- true
+		}
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding")

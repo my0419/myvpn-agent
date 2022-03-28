@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
+	"fmt"
 	"github.com/my0419/myvpn-agent/handler"
 	"github.com/my0419/myvpn-agent/installer"
 	"github.com/my0419/myvpn-agent/system"
@@ -37,7 +39,9 @@ func main() {
 		setup.Start()
 	}()
 
-	http.HandleFunc("/", handler.HandleState(setup, os.Getenv("ENCRYPT_KEY")))
+	stopAutocertHttp := make(chan bool)
+
+	http.HandleFunc("/", handler.HandleState(setup, stopAutocertHttp, os.Getenv("ENCRYPT_KEY")))
 
 	http.HandleFunc("/debug", func(writer http.ResponseWriter, request *http.Request) {
 		if false == system.DebugEnabled() {
@@ -75,6 +79,33 @@ func main() {
 				GetCertificate: certManager.GetCertificate,
 			},
 		}
+
+		go func() {
+			certServe := &http.Server{Addr: ":80", Handler: certManager.HTTPHandler(nil)}
+
+			go func() {
+				if err = certServe.ListenAndServe(); err != nil {
+					if err.Error() == "http: Server closed" {
+						fmt.Println("Shutdown :80 success")
+					} else {
+						fmt.Printf("Start cert serve error: %s\n", err)
+					}
+				}
+			}()
+
+			for {
+				select {
+				case <-stopAutocertHttp:
+					if certServe == nil {
+						continue
+					}
+					if err = certServe.Shutdown(context.Background()); err != nil {
+						fmt.Printf("Failed shutdown :80 error: %s\n", err.Error())
+					}
+				}
+			}
+		}()
+
 		if err = server.ListenAndServeTLS("", ""); err != nil {
 			log.Println("Failed to serve TLS", err)
 		}
