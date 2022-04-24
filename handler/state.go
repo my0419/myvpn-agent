@@ -8,6 +8,7 @@ import (
 	"github.com/my0419/myvpn-agent/installer"
 	"github.com/my0419/myvpn-agent/system"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"time"
@@ -15,7 +16,8 @@ import (
 
 func HandleState(installer *installer.Installer, stopAutocertHttp chan bool, encryptKey string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if r.TLS != nil {
+		_, port, _ := net.SplitHostPort(r.Host)
+		if r.TLS != nil || port == "8400" {
 			stopAutocertHttp <- true
 		}
 		w.Header().Set("Access-Control-Allow-Origin", "*")
