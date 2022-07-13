@@ -47,7 +47,7 @@ func listOfTypes() map[string]map[string]string {
 			TypeShadowsocks: "https://gist.githubusercontent.com/my0419/44f0e8aa1b70fa887432ad6d1d376830/raw/d9342b8ee8648c355240d4859696abe3a9e6d2b9/shadowsocks.sh",
 			TypeSocksFive:   "https://gist.githubusercontent.com/my0419/5ddf74cb80eed50d19ae799d37fcaecc/raw/61d65fd4a3875b32d1debe1d8038275d43423462/socks5.sh",
 			TypeOwncloud:    "https://gist.githubusercontent.com/my0419/e56665dc7a359ad276adcec76521384b/raw/6c8ac174a5bd558dbbb2bb5a2cacd525ab2cdd4f/owncloud.sh",
-			TypeNextcloud:   "https://gist.githubusercontent.com/my0419/f8a4d1b4b6d6b91095f5f74400862609/raw/5de11c1224416214b3401bfba4ae7e8870d202bc/nextcloud.sh",
+			TypeNextcloud:   "https://gist.githubusercontent.com/my0419/f8a4d1b4b6d6b91095f5f74400862609/raw/0aec7afd87cdb1e6f72b84f5213b6b2987d45e0d/nextcloud.sh",
 			TypeTorBridge:   "https://gist.githubusercontent.com/my0419/5b8641dee6af47b8510afeed4a6c765e/raw/b59c9a0dd6c292b8c7de055ec6f570f78b71fa69/torbridge.sh",
 		},
 	}
