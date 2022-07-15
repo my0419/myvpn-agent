@@ -22,7 +22,6 @@ func main() {
 		log.SetOutput(debugLogFile)
 	}
 
-	finish := make(chan bool)
 	if len(os.Getenv("ENCRYPT_KEY")) != 32 {
 		log.Fatal("Invalid ENCRYPT_KEY")
 	}
@@ -31,17 +30,18 @@ func main() {
 		os.Setenv("VPN_CLIENT_CONFIG_FILE", "/tmp/myvpn-client-config")
 	}
 
-	setup, err := installer.CreateInstaller(os.Getenv("VPN_TYPE"), os.Getenv("VPN_OS"))
+	setup, err := installer.CreateInstaller(os.Getenv("VPN_TYPE"))
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	go func() {
-		setup.Start()
+		setup.RunPreStage()
 	}()
 
-	stopAutocertHttp := make(chan bool)
+	stopHttp := make(chan bool)
 
-	http.HandleFunc("/", handler.HandleState(setup, stopAutocertHttp, os.Getenv("ENCRYPT_KEY")))
+	http.HandleFunc("/", handler.HandleState(setup, stopHttp, os.Getenv("ENCRYPT_KEY")))
 
 	http.HandleFunc("/debug", func(writer http.ResponseWriter, request *http.Request) {
 		if false == system.DebugEnabled() {
@@ -56,60 +56,93 @@ func main() {
 		writer.Write(b)
 	})
 
+	ip, err := system.PublicIpAddr()
+	if err != nil {
+		log.Println("Failed to get public ip addr")
+		return
+	}
+
+	domain := system.DomainName(ip)
+
+	certManager := autocert.Manager{
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist(domain),
+	}
+
+	serveTLS := &http.Server{
+		Addr: ":https",
+		TLSConfig: &tls.Config{
+			GetCertificate: certManager.GetCertificate,
+		},
+	}
+
+	serverCert := &http.Server{
+		Addr:    ":80",
+		Handler: certManager.HTTPHandler(nil),
+	}
+
+	serverHttp := &http.Server{
+		Addr:    ":8400",
+		Handler: nil,
+	}
+
+	// serve :80 - ACME challenge
 	go func() {
-		log.Println(http.ListenAndServe(":8400", nil))
-	}()
-
-	go func() {
-		ip, err := system.PublicIpAddr()
-		if err != nil {
-			log.Println("Failed to get public ip addr")
-			return
-		}
-		domain := system.DomainName(ip)
-		log.Println("Host:", domain)
-
-		certManager := autocert.Manager{
-			Prompt:     autocert.AcceptTOS,
-			HostPolicy: autocert.HostWhitelist(domain),
-		}
-		server := &http.Server{
-			Addr: ":https",
-			TLSConfig: &tls.Config{
-				GetCertificate: certManager.GetCertificate,
-			},
-		}
-
-		go func() {
-			certServe := &http.Server{Addr: ":80", Handler: certManager.HTTPHandler(nil)}
-
-			go func() {
-				if err = certServe.ListenAndServe(); err != nil {
-					if err.Error() == "http: Server closed" {
-						fmt.Println("Shutdown :80 success")
-					} else {
-						fmt.Printf("Start cert serve error: %s\n", err)
-					}
-				}
-			}()
-
-			for {
-				select {
-				case <-stopAutocertHttp:
-					if certServe == nil {
-						continue
-					}
-					if err = certServe.Shutdown(context.Background()); err != nil {
-						fmt.Printf("Failed shutdown :80 error: %s\n", err.Error())
-					}
-				}
+		if err = serverCert.ListenAndServe(); err != nil {
+			if err.Error() == "http: Server closed" {
+				fmt.Println("Shutdown :80 success")
+			} else {
+				fmt.Printf("Start cert serve error: %s\n", err)
 			}
-		}()
-
-		if err = server.ListenAndServeTLS("", ""); err != nil {
-			log.Println("Failed to serve TLS", err)
 		}
 	}()
 
-	<-finish
+	// serve :8400 - API
+	go func() {
+		if err = serverHttp.ListenAndServe(); err != nil {
+			if err.Error() == "http: Server closed" {
+				fmt.Println("Shutdown :8400 success")
+			} else {
+				fmt.Printf("Start cert serve error: %s\n", err)
+			}
+		}
+	}()
+
+	// serve :443 - API
+	go func() {
+		if err = serveTLS.ListenAndServeTLS("", ""); err != nil {
+			if err.Error() == "http: Server closed" {
+				fmt.Println("Shutdown :443 success")
+			} else {
+				fmt.Printf("Start TLS error: %s\n", err)
+			}
+		}
+	}()
+
+	// wait finish
+	for {
+		select {
+		case <-stopHttp:
+			if serverCert == nil {
+				continue
+			}
+
+			if err = serverCert.Shutdown(context.Background()); err != nil {
+				fmt.Printf("Failed shutdown :80 error: %s\n", err.Error())
+			}
+
+			if err = serveTLS.Shutdown(context.Background()); err != nil {
+				fmt.Printf("Failed shutdown :443 error: %s\n", err.Error())
+			}
+
+			if err = serverHttp.Shutdown(context.Background()); err != nil {
+				fmt.Printf("Failed shutdown :8400 error: %s\n", err.Error())
+			}
+
+			setup.RunPostStage()
+
+			os.Exit(0) // turn off agent response are delivered
+		}
+	}
+
 }

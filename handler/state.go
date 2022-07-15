@@ -6,20 +6,14 @@ import (
 	"fmt"
 	"github.com/my0419/myvpn-agent/crypto"
 	"github.com/my0419/myvpn-agent/installer"
-	"github.com/my0419/myvpn-agent/system"
 	"log"
-	"net"
 	"net/http"
 	"os"
 	"time"
 )
 
-func HandleState(installer *installer.Installer, stopAutocertHttp chan bool, encryptKey string) func(w http.ResponseWriter, r *http.Request) {
+func HandleState(installer *installer.Installer, stopHttp chan bool, encryptKey string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		_, port, _ := net.SplitHostPort(r.Host)
-		if r.TLS != nil || port == "8400" {
-			stopAutocertHttp <- true
-		}
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding")
@@ -31,9 +25,8 @@ func HandleState(installer *installer.Installer, stopAutocertHttp chan bool, enc
 		go func() {
 			select {
 			case <-ctx.Done():
-				if false == system.DebugEnabled() && state.Status.IsCompleted() {
-					time.Sleep(time.Minute)
-					os.Exit(0) // turn off agent response are delivered
+				if state.Status.IsCompleted() {
+					stopHttp <- true
 				}
 				return
 			default:
