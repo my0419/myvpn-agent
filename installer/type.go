@@ -58,7 +58,7 @@ func listOfPreScripts() map[string]map[string]string {
 			StagePost: "https://gist.githubusercontent.com/my0419/46f08c7c462a7577afe8a987bf4c67be/raw/7ece5f20332de13d5ce1d907f884dc2b0a23dd2a/owncloud:post.sh",
 		},
 		TypeNextcloud: {
-			StagePre:  "https://gist.githubusercontent.com/my0419/f8a4d1b4b6d6b91095f5f74400862609/raw/7fd6335f195796ea13333437b0b1c79cc4b2ced2/nextcloud.sh",
+			StagePre:  "https://gist.githubusercontent.com/my0419/f8a4d1b4b6d6b91095f5f74400862609/raw/868e728d779ea8d1d0c7714366cbda3fbe267289/nextcloud.sh",
 			StagePost: "https://gist.githubusercontent.com/my0419/0583ad72751f2411d390dd580776ddbd/raw/05c5fdb84ced0afba3af71b9a021f5d8b7fd7535/nextcloud:post.sh",
 		},
 		TypeTorBridge: {
