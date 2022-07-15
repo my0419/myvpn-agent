@@ -123,9 +123,6 @@ func main() {
 	for {
 		select {
 		case <-stopHttp:
-			if serverCert == nil {
-				continue
-			}
 
 			if err = serverCert.Shutdown(context.Background()); err != nil {
 				fmt.Printf("Failed shutdown :80 error: %s\n", err.Error())
