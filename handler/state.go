@@ -26,6 +26,7 @@ func HandleState(installer *installer.Installer, stopHttp chan bool, encryptKey 
 			select {
 			case <-ctx.Done():
 				if state.Status.IsCompleted() {
+					time.Sleep(30) // delay to sync state
 					stopHttp <- true
 				}
 				return
