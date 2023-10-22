@@ -33,7 +33,7 @@ func listOfPreScripts() map[string]map[string]string {
 			StagePre: "https://gist.githubusercontent.com/my0419/560071251f2427a9a19862d8a04edb94/raw/5386506d045b5dd73e83b88f58e2ce4045708679/l2tp.sh",
 		},
 		TypeIKEV2: {
-			StagePre: "https://gist.githubusercontent.com/my0419/4bdd4dbfaa4d488ddac1c5fe268bf3a8/raw/7d71b7207745a18ea6dd5f6ec29cb537f94b456d/ikev2.sh",
+			StagePre: "https://gist.githubusercontent.com/my0419/4bdd4dbfaa4d488ddac1c5fe268bf3a8/raw/75c50f71af01ef6a77797c3e231d8a020a87b72a/ikev2.sh",
 		},
 		TypePPTP: {
 			StagePre: "https://gist.githubusercontent.com/my0419/db77a7bdb466b9df01ffa3f96f4b3f37/raw/c4df04e15b9a5b2edfd4cdad1aef32a71cea9e28/pptp.sh",
