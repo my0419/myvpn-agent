@@ -16,6 +16,8 @@ import (
 
 func main() {
 
+	log.Println("Welcome to MyVPN, your reliable service for installing and configuring VPN connections.")
+
 	// debug mode
 	if debugLogFile := system.CreateDebugLogFile(); debugLogFile != nil {
 		log.SetFlags(log.Lshortfile)
