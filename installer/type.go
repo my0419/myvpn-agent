@@ -9,6 +9,7 @@ const (
 
 const (
 	TypeL2TP        = "l2tp"
+	TypeIKEV2       = "ikev2"
 	TypePPTP        = "pptp"
 	TypeOpenVPN     = "openvpn"
 	TypeWireGuard   = "wireguard"
@@ -30,6 +31,9 @@ func listOfPreScripts() map[string]map[string]string {
 	return map[string]map[string]string{
 		TypeL2TP: {
 			StagePre: "https://gist.githubusercontent.com/my0419/560071251f2427a9a19862d8a04edb94/raw/5386506d045b5dd73e83b88f58e2ce4045708679/l2tp.sh",
+		},
+		TypeIKEV2: {
+			StagePre: "https://gist.githubusercontent.com/my0419/4bdd4dbfaa4d488ddac1c5fe268bf3a8/raw/e4e1f37cdd470df381261b82a0f5c211b606c238/ikev2.sh",
 		},
 		TypePPTP: {
 			StagePre: "https://gist.githubusercontent.com/my0419/db77a7bdb466b9df01ffa3f96f4b3f37/raw/c4df04e15b9a5b2edfd4cdad1aef32a71cea9e28/pptp.sh",
