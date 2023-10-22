@@ -15,6 +15,7 @@ const (
 	TypeWireGuard   = "wireguard"
 	TypeShadowsocks = "shadowsocks"
 	TypeSocksFive   = "socks5"
+	OpenConnect     = "openconnect"
 	TypeOwncloud    = "owncloud"
 	TypeNextcloud   = "nextcloud"
 	TypeTorBridge   = "torbridge"
@@ -53,6 +54,9 @@ func listOfPreScripts() map[string]map[string]string {
 		},
 		TypeShadowsocks: {
 			StagePre: "https://gist.githubusercontent.com/my0419/44f0e8aa1b70fa887432ad6d1d376830/raw/d9342b8ee8648c355240d4859696abe3a9e6d2b9/shadowsocks.sh",
+		},
+		OpenConnect: {
+			StagePre: "https://gist.githubusercontent.com/my0419/424b2774b24a21bbf520950d779431f5/raw/f4b54d322919bf8263715523c37d68d8078a4971/openconnect.sh",
 		},
 		TypeSocksFive: {
 			StagePre: "https://gist.githubusercontent.com/my0419/5ddf74cb80eed50d19ae799d37fcaecc/raw/61d65fd4a3875b32d1debe1d8038275d43423462/socks5.sh",
